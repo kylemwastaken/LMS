@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using LMS.Data;
 using LMS.Models;
+using LMS.DTOs;
 
 namespace LMS.Controllers;
 
@@ -9,22 +10,52 @@ namespace LMS.Controllers;
 public class BooksController : ControllerBase
 {
     private readonly LibraryContext _context;
-    public BooksController(LibraryContext context) => _context = context;
 
-    [HttpGet]
-    public IActionResult GetBooks(string? search)
+    public BooksController(LibraryContext context)
     {
-        var books = string.IsNullOrEmpty(search)
-            ? _context.Books.ToList()
-            : _context.Books.Where(b => b.Title.Contains(search)).ToList();
-        return Ok(books);
+        _context = context;
     }
 
     [HttpPost]
-    public IActionResult AddBook(Book book)
+    public IActionResult AddBook([FromBody] BookDto dto)
     {
+        if (string.IsNullOrEmpty(dto.ISBN) || dto.TotalCopies <= 0)
+            return BadRequest(new { message = "ISBN and TotalCopies are required" });
+
+        var book = new Book
+        {
+            ISBN = dto.ISBN,
+            Title = dto.Title,
+            Author = dto.Author,
+            Category = dto.Category,
+            TotalCopies = dto.TotalCopies,
+            AvailableCopies = dto.TotalCopies
+        };
+
         _context.Books.Add(book);
         _context.SaveChanges();
+
         return Ok(book);
     }
+
+     [HttpGet]
+    public IActionResult GetBooks()
+    {
+        var books = _context.Books.ToList();
+        return Ok(books);
+    }
+
+    // ✅ GET: api/books/{id}
+    [HttpGet("{id}")]
+    public IActionResult GetBook(int id)
+    {
+        var book = _context.Books.Find(id);
+        if (book == null)
+            return NotFound(new { message = "Book not found" });
+
+        return Ok(book);
+    }
+
+
 }
+

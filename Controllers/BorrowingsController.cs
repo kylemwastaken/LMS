@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using LMS.Data;
 using LMS.Models;
+using LMS.DTOs;
 
 namespace LMS.Controllers;
 
@@ -12,18 +13,19 @@ public class BorrowingsController : ControllerBase
     public BorrowingsController(LibraryContext context) => _context = context;
 
     [HttpPost("borrow")]
-    public IActionResult BorrowBook(int memberId, int bookId)
+    public IActionResult BorrowBook([FromBody] BorrowingDto dto)
     {
-        var member = _context.Members.Find(memberId);
-        var book = _context.Books.Find(bookId);
+        var member = _context.Members.Find(dto.MemberId);
+        var book = _context.Books.Find(dto.BookId);
 
-        if (book == null || member == null) return NotFound();
+        if (book == null || member == null) return NotFound(new { message = "Member or Book not found" });
         if (book.AvailableCopies <= 0) return BadRequest("No copies available");
 
         var borrowing = new Borrowing
         {
-            MemberId = memberId,
-            BookId = bookId,
+            MemberId = dto.MemberId,
+            BookId = dto.BookId,
+            BorrowDate = DateTime.Now,
             DueDate = DateTime.Now.AddDays(14)
         };
 
@@ -31,14 +33,15 @@ public class BorrowingsController : ControllerBase
         _context.Borrowings.Add(borrowing);
         _context.SaveChanges();
 
-        return Ok(borrowing);
+        return Ok(new { message = "Book borrowed successfully", borrowingId = borrowing.BorrowingId });
     }
 
-    [HttpPost("return/{borrowingId}")]
+    [HttpPost("return/{borrowingId}")] 
     public IActionResult ReturnBook(int borrowingId)
     {
         var borrowing = _context.Borrowings.Find(borrowingId);
-        if (borrowing == null) return NotFound();
+        if (borrowing == null) return NotFound(new { message = "Borrowing record not found" });
+        if (borrowing.ReturnDate != null) return BadRequest(new { message = "Book already returned" });
 
         borrowing.ReturnDate = DateTime.Now;
         var book = _context.Books.Find(borrowing.BookId);
@@ -46,16 +49,17 @@ public class BorrowingsController : ControllerBase
         book.AvailableCopies++;
 
         // Fine calculation
-        if (borrowing.ReturnDate > borrowing.DueDate)
+       /* if (borrowing.ReturnDate > borrowing.DueDate)
         {
             var daysLate = (borrowing.ReturnDate.Value - borrowing.DueDate).Days;
             var fine = new Fine
             {
                 BorrowingId = borrowingId,
-                Amount = daysLate * 10 // e.g., $10 per day
+                Amount = daysLate * 10 // e.g., $10 per day 
+            
             };
             _context.Fines.Add(fine);
-        }
+        }*/
 
         _context.SaveChanges();
         return Ok(new { message = "Book returned", borrowing });

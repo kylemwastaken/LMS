@@ -8,8 +8,10 @@ C:\Users\kylem\LMS\bin\Debug\net10.0\LMS.dll
 C:\Users\kylem\LMS\bin\Debug\net10.0\LMS.pdb
 C:\Users\kylem\LMS\bin\Debug\net10.0\Azure.Core.dll
 C:\Users\kylem\LMS\bin\Debug\net10.0\Azure.Identity.dll
+C:\Users\kylem\LMS\bin\Debug\net10.0\BCrypt.Net-Next.dll
 C:\Users\kylem\LMS\bin\Debug\net10.0\Humanizer.dll
 C:\Users\kylem\LMS\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\kylem\LMS\bin\Debug\net10.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\kylem\LMS\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
 C:\Users\kylem\LMS\bin\Debug\net10.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\kylem\LMS\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll
@@ -145,6 +147,7 @@ C:\Users\kylem\LMS\obj\Debug\net10.0\LMS.AssemblyInfo.cs
 C:\Users\kylem\LMS\obj\Debug\net10.0\LMS.csproj.CoreCompileInputs.cache
 C:\Users\kylem\LMS\obj\Debug\net10.0\LMS.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\kylem\LMS\obj\Debug\net10.0\LMS.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\kylem\LMS\obj\Debug\net10.0\LMS.sourcelink.json
 C:\Users\kylem\LMS\obj\Debug\net10.0\rjimswa.dswa.cache.json
 C:\Users\kylem\LMS\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 C:\Users\kylem\LMS\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
