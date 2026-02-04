@@ -104,4 +104,43 @@ public IActionResult Login([FromBody] LoginDto dto)
     var token = tokenHandler.CreateToken(tokenDescriptor);
     return Ok(new { token = tokenHandler.WriteToken(token), role = member.Role });
 }
+
+[HttpPost("confirm-email")]
+public IActionResult ConfirmEmail([FromQuery] string token)
+{
+    var tokenHandler = new JwtSecurityTokenHandler();
+    var key = Encoding.UTF8.GetBytes(_config["Jwt:Key"]!);
+
+    try
+    {
+        var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        }, out SecurityToken validatedToken);
+
+        var memberId = int.Parse(principal.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+
+        var member = _context.Members.Find(memberId);
+        if (member == null)
+            return NotFound(new { message = "Member not found" });
+
+        if (member.EmailConfirmed)
+            return BadRequest(new { message = "Email already confirmed" });
+
+        member.EmailConfirmed = true;
+        _context.SaveChanges();
+
+        return Ok(new { message = "Email confirmed successfully" });
+    }
+    catch (Exception ex)
+    {
+        return BadRequest(new { message = "Invalid or expired token", error = ex.Message });
+    }
+}
+
+
 }

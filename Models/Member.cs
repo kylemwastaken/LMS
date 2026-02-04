@@ -9,6 +9,8 @@ public class Member
     public string Role { get; set; } = "Member"; // Admin, Librarian, Member
     public int BorrowLimit { get; set; } = 3;
 
+     public bool EmailConfirmed { get; set; } = false; // ✅ new field
+
     public ICollection<Borrowing>? Borrowings { get; set; }
 }
 
