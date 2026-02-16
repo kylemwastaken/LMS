@@ -4,8 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using LMS.DTOs;
+
+
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+
+
 
 // SQL Server connection
 builder.Services.AddDbContext<LibraryContext>(options =>
@@ -21,10 +28,6 @@ builder.Services.AddControllers();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
-        var jwtKey = builder.Configuration["Jwt:Key"];
-        if (string.IsNullOrEmpty(jwtKey))
-            throw new InvalidOperationException("JWT Key is not configured");
-        
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false,
@@ -32,11 +35,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(jwtKey))
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
         };
     });
 
-builder.Services.AddAuthorization();    
+
+builder.Services.AddAuthorization(options =>
+{
+     options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("RequireLibrarian", policy => policy.RequireRole("Librarian"));
+    options.AddPolicy("RequireMember", policy => policy.RequireRole("Member"));
+}
+
+);    
 
 
 var app = builder.Build();
@@ -46,6 +57,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 app.Run();

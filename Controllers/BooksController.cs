@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using LMS.Data;
 using LMS.Models;
 using LMS.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS.Controllers;
 
@@ -17,6 +18,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin,Librarian")] //  Only Librarians and Admins can add books
     public IActionResult AddBook([FromBody] BookDto dto)
     {
         if (string.IsNullOrEmpty(dto.ISBN) || dto.TotalCopies <= 0)

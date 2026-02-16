@@ -12,6 +12,7 @@ using System.Linq;
 
 
 
+
 namespace LMS.Controllers;
 
 [ApiController]
@@ -27,6 +28,7 @@ public class AuthController : ControllerBase
     {
         _context = context;
         _config = config;
+        
         
     }
    [HttpPost("register")]
@@ -45,15 +47,17 @@ public class AuthController : ControllerBase
         if (_context.Members.Any(m => m.Email == dto.Email))
             return BadRequest(new { message = "Email already exists" });
 
-        // ✅ Create new member
+        // ✅ Create new member 
         var member = new Member
         {
             Name = dto.Name,
             Email = dto.Email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-            Role = "Member",
-            BorrowLimit = 3
+            Role = dto.Role ?? "Member",
+            BorrowLimit = 3,
+            EmailConfirmed = false
         };
+       
 
         _context.Members.Add(member);
         _context.SaveChanges();
@@ -92,8 +96,13 @@ public IActionResult Login([FromBody] LoginDto dto)
             new SymmetricSecurityKey(key),
             SecurityAlgorithms.HmacSha256Signature)
     };
+    var keyString = _config["Jwt:Key"];
+    Console.WriteLine($"[GENERATION] Jwt:Key = {keyString}");
+
 
     var jwtKey = _config["Jwt:Key"];
+    
+
      if (string.IsNullOrEmpty(jwtKey))
      {
      throw new InvalidOperationException("JWT Key is missing in configuration.");
@@ -110,6 +119,10 @@ public IActionResult ConfirmEmail([FromQuery] string token)
 {
     var tokenHandler = new JwtSecurityTokenHandler();
     var key = Encoding.UTF8.GetBytes(_config["Jwt:Key"]!);
+    var jwtKey = _config["Jwt:Key"];
+    var keyString = _config["Jwt:Key"];
+    Console.WriteLine($"[VALIDATION] Jwt:Key = {keyString}");
+
 
     try
     {

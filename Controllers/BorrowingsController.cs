@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using LMS.Data;
 using LMS.Models;
 using LMS.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LMS.Controllers;
 
@@ -13,6 +14,7 @@ public class BorrowingsController : ControllerBase
     public BorrowingsController(LibraryContext context) => _context = context;
 
     [HttpPost("borrow")]
+   // [Authorize(Roles = "Member")] // Only Members can borrow books
     public IActionResult BorrowBook([FromBody] BorrowingDto dto)
     {
         var member = _context.Members.Find(dto.MemberId);
@@ -37,6 +39,7 @@ public class BorrowingsController : ControllerBase
     }
 
     [HttpPost("return/{borrowingId}")] 
+   // [Authorize(Roles = "Member")] // Only Members can return books
     public IActionResult ReturnBook(int borrowingId)
     {
         var borrowing = _context.Borrowings.Find(borrowingId);
@@ -49,7 +52,7 @@ public class BorrowingsController : ControllerBase
         book.AvailableCopies++;
 
         // Fine calculation
-       /* if (borrowing.ReturnDate > borrowing.DueDate)
+        if (borrowing.ReturnDate > borrowing.DueDate)
         {
             var daysLate = (borrowing.ReturnDate.Value - borrowing.DueDate).Days;
             var fine = new Fine
@@ -59,7 +62,7 @@ public class BorrowingsController : ControllerBase
             
             };
             _context.Fines.Add(fine);
-        }*/
+        }
 
         _context.SaveChanges();
         return Ok(new { message = "Book returned", borrowing });

@@ -10,5 +10,6 @@ public class Book
     public int TotalCopies { get; set; }
     public int AvailableCopies { get; set; }
 }
+//public enum BookCategory { Academic, Fiction, Documentary}
 
 
