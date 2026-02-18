@@ -62,7 +62,7 @@ public class BorrowingsController : ControllerBase
             
             };
             _context.Fines.Add(fine);
-        }
+        } 
 
         _context.SaveChanges();
         return Ok(new { message = "Book returned", borrowing });
