@@ -11,4 +11,11 @@ public class LibraryContext : DbContext
     public DbSet<Member> Members { get; set; }
     public DbSet<Borrowing> Borrowings { get; set; }
     public DbSet<Fine> Fines { get; set; }
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Book>()
+            .Property(b => b.Category)
+            .HasConversion<string>();   // ✅ store enum as string in DB
+    }
 }
+

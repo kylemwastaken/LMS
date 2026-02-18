@@ -1,8 +1,10 @@
+
 using Microsoft.AspNetCore.Mvc;
 using LMS.Data;
 using LMS.Models;
 using LMS.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace LMS.Controllers;
 
@@ -57,6 +59,17 @@ public class BooksController : ControllerBase
 
         return Ok(book);
     }
+
+    [HttpGet("browse/{category}")]
+    public async Task<IActionResult> BrowseBooks(BookCategory category)
+    {
+         var books = await _context.Books
+             .Where(b => b.Category == category)
+             .ToListAsync();
+
+         return Ok(books);
+    }
+
 
 
 }
