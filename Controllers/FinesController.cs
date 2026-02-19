@@ -37,7 +37,7 @@ namespace LMS.Controllers;
 
         // Pay a fine
         [HttpPost("pay")]
-        [Authorize(Roles = "Member,Librarian,Admin")]
+        //[Authorize(Roles = "Member,Librarian,Admin")]
         public IActionResult PayFine([FromBody] PayFineDto dto)
         {
             var fine = _context.Fines.Find(dto.FineId);
