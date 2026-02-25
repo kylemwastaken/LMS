@@ -14,7 +14,7 @@ public class RegisterDto
         [Required(ErrorMessage = "Password is required")]
         public string Password { get; set; } = string.Empty;
 
-        public string? Role { get; set; } // Optional role field
+        //public string? Role { get; set; } // Optional role field
     }
 
 

@@ -53,7 +53,7 @@ public class AuthController : ControllerBase
             Name = dto.Name,
             Email = dto.Email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-            Role = dto.Role ?? "Member",
+            //Role = dto.Role ?? "Member",
             BorrowLimit = 3,
             EmailConfirmed = false
         };
