@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import api from "../services/api";
+import "./Register.css";
+import { Link } from "react-router-dom";
+
 
 function Register() {
-  const [form, setForm] = useState({ name: "", email: "", password: "", role: "Member" });
+  const [form, setForm] = useState({ name: "", email: "", password: "", confirmPassword: "", role: "Member" });
   const [message, setMessage] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -11,29 +15,34 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (form.password !== form.confirmPassword) {
+      setMessage("Passwords do not match.");
+      setIsSuccess(false);
+      return;
+    }
     try {
       const res = await api.post("/Auth/register", form);
       setMessage(res.data?.message || "Registration successful! You can now log in.");
+      setIsSuccess(true);
     } catch (err) {
-      // log full error for debugging
       console.error(err.response ? err.response.data : err.message);
       const serverMsg = err.response?.data?.message;
       setMessage(serverMsg ? `Registration failed: ${serverMsg}` : "Registration failed.");
+      setIsSuccess(false);
     }
   };
 
   return (
-    <div>
+    <div className="register-container">
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <input
-          type="name"
+          type="text"
           name="name"
           placeholder="Name"
           value={form.name}
           onChange={handleChange}
         />
-        <br />
         <input
           type="email"
           name="email"
@@ -41,7 +50,6 @@ function Register() {
           value={form.email}
           onChange={handleChange}
         />
-        <br />
         <input
           type="password"
           name="password"
@@ -49,18 +57,26 @@ function Register() {
           value={form.password}
           onChange={handleChange}
         />
-      {/*  <br />
-        <select name="role" value={form.role} onChange={handleChange}>
-          <option value="Member">Member</option>
-          <option value="Librarian">Librarian</option>
-          <option value="Admin">Admin</option>
-        </select>*/}
-        <br /> 
+        <input
+         type="password"
+         name="confirmPassword"
+         placeholder="Confirm Password"
+         value={form.confirmPassword}
+         onChange={handleChange}
+        />
+
         <button type="submit">Register</button>
       </form>
-      <p>{message}</p>
+      <p>
+        Already have an account? <Link to="/login">Login here</Link>
+      </p>
+
+
+      <p className={isSuccess ? "success" : "error"}>{message}</p>
     </div>
   );
 }
+
+
 
 export default Register;

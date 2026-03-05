@@ -1,0 +1,71 @@
+.login-container {
+  padding: 40px;
+  background: #f5fff5; /* light green background */
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-container h2 {
+  color: #2e7d32; /* deep green */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Form styling */
+.login-container form {
+  background: #e8f5e9; /* very light green card */
+  border: 1px solid #c8e6c9;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+}
+
+.login-container input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 2px solid #4caf50;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.login-container input:focus {
+  border-color: #2e7d32;
+}
+
+/* Button styling */
+.login-container button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-container button:hover {
+  background-color: #2e7d32;
+}
+
+/* Message styling */
+.login-container p {
+  margin-top: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.login-container p.success {
+  color: #2e7d32; /* green for success */
+}
+
+.login-container p.error {
+  color: #d32f2f; /* red for error */
+}

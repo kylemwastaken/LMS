@@ -6,19 +6,24 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Borrowings from "./pages/Borrowings";
 import Home from "./pages/Home";
+import "./App.css";
+import { NavLink } from "react-router-dom";
+
 
 
 function App() {
-    return (
+  return (
     <Router>
-      <nav>
-        <Link to="/">Home</Link> | 
-        <Link to="/books">Books</Link> | 
-        <Link to="/borrowings">Borrowings</Link> | 
-        <Link to="/fines">Fines</Link> | 
-        <Link to="/login">Login</Link> | 
-        <Link to="/register">Register</Link>
-      </nav>
+      
+<nav className="navbar">
+  <NavLink to="/" end>Home</NavLink>
+  <NavLink to="/books">Books</NavLink>
+  <NavLink to="/borrowings">Borrowings</NavLink>
+  <NavLink to="/fines">Fines</NavLink>
+  <NavLink to="/login">Login</NavLink>
+  <NavLink to="/register">Register</NavLink>
+</nav>
+
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/books" element={<Books />} />
@@ -29,8 +34,7 @@ function App() {
       </Routes>
     </Router>
   );
-
-
 }
+
 
 export default App;

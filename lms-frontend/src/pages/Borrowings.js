@@ -1,44 +1,88 @@
 import React, { useEffect, useState } from "react";
 import api from "../services/api";
+import "./Borrowings.css";
 
 function Borrowings() {
-  const [borrowings, setBorrowings] = useState([]);
+  const [form, setForm] = useState({ memberId: "", bookId: "" });
+  const [returnId, setReturnId] = useState("");
+  const [message, setMessage] = useState("");
+  const [lastBorrowing, setLastBorrowing] = useState(null);
 
-  useEffect(() => {
-    api.get("/borrowings")
-      .then(res => setBorrowings(res.data))
-      .catch(err => console.error("Error fetching borrowings:", err));
-  }, []);
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // Borrow a book
+  const handleBorrow = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await api.post("/borrowings/borrow", form);
+      setMessage(res.data.message || "Book borrowed successfully!");
+      setLastBorrowing(res.data); // capture borrowing record
+      setForm({ memberId: "", bookId: "" });
+    } catch (err) {
+      setMessage("Failed to borrow book.");
+    }
+  };
+
+  // Return a book
+  const handleReturn = async () => {
+    try {
+      const res = await api.post(`/borrowings/return/${returnId}`);
+      setMessage(res.data.message || "Book returned successfully!");
+      setReturnId("");
+      setLastBorrowing(null); // clear after return
+    } catch (err) {
+      setMessage("Failed to return book.");
+    }
+  };
 
   return (
-    <div>
+    <div className="borrowings-container">
       <h2>Borrowings</h2>
-      <table border="1" cellPadding="8">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Member</th>
-            <th>Book</th>
-            <th>Borrow Date</th>
-            <th>Due Date</th>
-            <th>Return Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          {borrowings.map(b => (
-            <tr key={b.borrowingId}>
-              <td>{b.borrowingId}</td>
-              <td>{b.memberId}</td>
-              <td>{b.bookId}</td>
-              <td>{new Date(b.borrowDate).toLocaleDateString()}</td>
-              <td>{new Date(b.dueDate).toLocaleDateString()}</td>
-              <td>{b.returnDate ? new Date(b.returnDate).toLocaleDateString() : "Not returned"}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      {/* Borrow Book Form */}
+      <form onSubmit={handleBorrow}>
+        <input
+          type="text"
+          name="memberId"
+          placeholder="Member ID"
+          value={form.memberId}
+          onChange={handleChange}
+        />
+        <input
+          type="text"
+          name="bookId"
+          placeholder="Book ID"
+          value={form.bookId}
+          onChange={handleChange}
+        />
+        <button type="submit">Borrow Book</button>
+      </form>
+
+      {/* Show Borrowing ID */}
+      {lastBorrowing && (
+        <p>
+          Borrowing ID: <strong>{lastBorrowing.borrowingId}</strong>
+        </p>
+      )}
+
+      {/* Return Book */}
+      <div>
+        <input
+          type="text"
+          placeholder="Borrowing ID"
+          value={returnId}
+          onChange={(e) => setReturnId(e.target.value)}
+        />
+        <button onClick={handleReturn}>Return Book</button>
+      </div>
+
+      <p>{message}</p>
     </div>
   );
 }
+
+
 
 export default Borrowings;

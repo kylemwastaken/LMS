@@ -1,0 +1,76 @@
+.books-container {
+  padding: 30px;
+  background: #f5fff5; /* light green background */
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.books-container h2 {
+  color: #2e7d32; /* deep green */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Forms and inputs */
+.books-container form,
+.books-container div {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.books-container input {
+  padding: 8px;
+  margin: 5px;
+  border: 2px solid #4caf50;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.books-container input:focus {
+  border-color: #2e7d32;
+}
+
+/* Buttons */
+.books-container button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.books-container button:hover {
+  background-color: #2e7d32;
+}
+
+/* Book list */
+.books-container ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.books-container li {
+  background: #e8f5e9; /* very light green card */
+  border: 1px solid #c8e6c9;
+  margin: 8px auto;
+  padding: 10px;
+  border-radius: 6px;
+  width: 60%;
+  text-align: left;
+  color: #2e7d32;
+  font-weight: 500;
+}
+
+/* Messages */
+.books-container p {
+  text-align: center;
+  color: #d32f2f; /* red for errors */
+  font-weight: bold;
+  margin-top: 15px;
+}
+

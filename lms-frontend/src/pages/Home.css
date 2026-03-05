@@ -1,0 +1,49 @@
+/* General container */
+.home-container {
+  text-align: center;
+  padding: 40px;
+  background: #f5fff5; /* very light green background */
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* Heading */
+.home-container h1 {
+  color: #2e7d32; /* deep green */
+  margin-bottom: 20px;
+}
+
+/* Subtext */
+.home-container p {
+  color: #4caf50; /* medium green */
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+/* Navigation list */
+.home-container ul {
+  list-style: none;
+  padding: 0;
+}
+
+.home-container li {
+  margin: 12px 0;
+}
+
+/* Links */
+.home-container a {
+  text-decoration: none;
+  color: #2e7d32;
+  font-weight: bold;
+  font-size: 1.1rem;
+  padding: 8px 16px;
+  border: 2px solid #2e7d32;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.home-container a:hover {
+  background-color: #2e7d32;
+  color: #fff;
+}

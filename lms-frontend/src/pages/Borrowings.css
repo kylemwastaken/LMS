@@ -1,0 +1,56 @@
+.borrowings-container {
+  padding: 30px;
+  background: #f5fff5; /* light green background */
+  min-height: 100vh;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.borrowings-container h2 {
+  color: #2e7d32; /* deep green */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Forms and inputs */
+.borrowings-container form,
+.borrowings-container div {
+  margin: 15px 0;
+  text-align: center;
+}
+
+.borrowings-container input {
+  padding: 8px;
+  margin: 5px;
+  border: 2px solid #4caf50;
+  border-radius: 6px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.borrowings-container input:focus {
+  border-color: #2e7d32;
+}
+
+/* Buttons */
+.borrowings-container button {
+  background-color: #4caf50;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  margin: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.borrowings-container button:hover {
+  background-color: #2e7d32;
+}
+
+/* Messages */
+.borrowings-container p {
+  text-align: center;
+  color: #d32f2f; /* red for errors */
+  font-weight: bold;
+  margin-top: 15px;
+}

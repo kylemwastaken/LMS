@@ -70,6 +70,33 @@ public class BooksController : ControllerBase
          return Ok(books);
     }
 
+    [HttpGet("title/{title}")]
+    public async Task<IActionResult> GetBooksByTitle(string title)
+    {
+           var books = await _context.Books
+              .Where(b => b.Title.Contains(title))
+              .ToListAsync();
+
+            if (books == null || books.Count == 0)
+               return NotFound(new { message = "No books found with that title." });
+
+            return Ok(books);
+    }
+    [HttpGet("author/{author}")]
+    public async Task<IActionResult> GetBooksByAuthor(string author)
+    {
+            var books = await _context.Books
+                .Where(b => b.Author.Contains(author))
+                .ToListAsync();
+
+            if (books == null || books.Count == 0)
+                return NotFound(new { message = "No books found for that author." });
+
+             return Ok(books);
+    }
+
+
+
 
 
 }
