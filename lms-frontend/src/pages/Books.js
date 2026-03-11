@@ -4,12 +4,13 @@ import "./Books.css";
 
 function Books() {
   const [books, setBooks] = useState([]);
-  const [newBook, setNewBook] = useState({ title: "", author: "", category: "" });
+  const [newBook, setNewBook] = useState({ isbn: "", title: "", author: "", category: "Fiction", totalCopies: 1 });
   const [searchId, setSearchId] = useState("");
   const [searchCategory, setSearchCategory] = useState("");
   const [searchTitle, setSearchTitle] = useState("");
   const [searchAuthor, setSearchAuthor] = useState("");
   const [message, setMessage] = useState("");
+  const role = localStorage.getItem("role");
 
   // Fetch all books
   useEffect(() => {
@@ -25,7 +26,7 @@ function Books() {
       const res = await api.post("/books", newBook);
       setMessage("Book added successfully!");
       setBooks([...books, res.data]);
-      setNewBook({ title: "", author: "", category: "" });
+      setNewBook({ isbn: "", title: "", author: "", category: "Fiction", totalCopies: 1 });
     } catch (err) {
       setMessage("Failed to add book.");
     }
@@ -88,27 +89,49 @@ function Books() {
       <h2>Books</h2>
 
       {/* Add Book Form */}
+      {role === "Admin" && (
       <form onSubmit={handleAddBook}>
+        <input
+          type="text"
+          placeholder="ISBN (13 digits)"
+          value={newBook.isbn}
+          onChange={(e) => setNewBook({ ...newBook, isbn: e.target.value })}
+          required
+        />
         <input
           type="text"
           placeholder="Title"
           value={newBook.title}
           onChange={(e) => setNewBook({ ...newBook, title: e.target.value })}
+          required
         />
         <input
           type="text"
           placeholder="Author"
           value={newBook.author}
           onChange={(e) => setNewBook({ ...newBook, author: e.target.value })}
+          required
         />
-        <input
-          type="text"
-          placeholder="Category"
+        <select
           value={newBook.category}
           onChange={(e) => setNewBook({ ...newBook, category: e.target.value })}
+          required
+        >
+          <option value="Fiction">Fiction</option>
+          <option value="Academic">Academic</option>
+          <option value="Documentary">Documentary</option>
+        </select>
+        <input
+          type="number"
+          placeholder="Total Copies"
+          value={newBook.totalCopies}
+          onChange={(e) => setNewBook({ ...newBook, totalCopies: parseInt(e.target.value) || 1 })}
+          min="1"
+          required
         />
         <button type="submit">Add Book</button>
       </form>
+      )}
 
       {/* Search by ID */}
       <div>

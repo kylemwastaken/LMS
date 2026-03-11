@@ -3,6 +3,7 @@ using LMS.Data;
 using LMS.Models;
 using LMS.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace LMS.Controllers;
 
@@ -67,4 +68,21 @@ public class BorrowingsController : ControllerBase
         _context.SaveChanges();
         return Ok(new { message = "Book returned", borrowing });
     }
+    [HttpGet("All")]
+    [Authorize(Roles = "Admin")] // Only Admins can view all borrowings
+    public async Task<IActionResult> GetAllBorrowings()
+    {
+        var borrowings =  await _context.Borrowings
+        
+            .Include(b => b.Book)
+            .Include(b => b.Member)
+            .ToListAsync();
+         
+
+        if (borrowings == null || borrowings.Count == 0)
+            return NotFound(new { message = "No borrowings found." });
+
+        return Ok(borrowings);
+    }
+
 }

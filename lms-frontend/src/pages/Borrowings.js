@@ -7,6 +7,10 @@ function Borrowings() {
   const [returnId, setReturnId] = useState("");
   const [message, setMessage] = useState("");
   const [lastBorrowing, setLastBorrowing] = useState(null);
+  const role = localStorage.getItem("role");
+  const [allBorrowings, setAllBorrowings] = useState([]);
+
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -36,6 +40,19 @@ function Borrowings() {
       setMessage("Failed to return book.");
     }
   };
+
+  // Fetch all borrowings (Admin only)
+  const handleShowAllBorrowings = async () => {
+  try {
+    const res = await api.get("/borrowings/All");
+    setAllBorrowings(res.data);
+    setMessage("");
+  } catch (err) {
+    setMessage("Failed to fetch borrowings.");
+    setAllBorrowings([]);
+  }
+};
+
 
   return (
     <div className="borrowings-container">
@@ -78,7 +95,26 @@ function Borrowings() {
         <button onClick={handleReturn}>Return Book</button>
       </div>
 
+      {/* Show All Borrowings - Admin Only */}
+      {role === "Admin" && (
+        <div>
+            <button onClick={handleShowAllBorrowings}>Show All Borrowings</button>
+        </div>
+    )}
+
+
       <p>{message}</p>
+      {role === "Admin" && allBorrowings.length > 0 && (
+          <ul>
+            {allBorrowings.map(b => (
+           <li key={b.borrowingId}>
+               Borrowing ID: {b.borrowingId} — Book: {b.book?.title} — Member: {b.member?.name}
+
+           </li>
+          ))}
+         </ul>
+       )}
+
     </div>
   );
 }

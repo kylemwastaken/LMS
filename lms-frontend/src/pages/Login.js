@@ -20,6 +20,7 @@ function Login() {
       setMessage("Login successful!");
       setIsSuccess(true);
       localStorage.setItem("token", res.data.token);
+      localStorage.setItem("role", res.data.role);
     } catch (err) {
       console.error(err.response ? err.response.data : err.message);
       const serverMsg = err.response?.data?.message;
