@@ -74,3 +74,28 @@
   margin-top: 15px;
 }
 
+.books-container select {
+  width: 15%;
+  padding: 8px 12px;
+  margin: 5px 0;
+  border: 2px solid #4caf50;   /* green border */
+  border-radius: 6px;
+  background-color: #fff;      /* white background */
+  color: #2e7d32;              /* dark green text */
+  font-size: 14px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.books-container select:focus {
+  border-color: #2e7d32;       /* darker green on focus */
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5);
+  outline: none;
+}
+
+.books-container option {
+  padding: 6px;
+  color: #2e7d32;
+}
+
+

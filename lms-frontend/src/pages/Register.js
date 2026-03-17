@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 import api from "../services/api";
 import "./Register.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 
 function Register() {
+  const navigate = useNavigate();
   const [form, setForm] = useState({ name: "", email: "", password: "", confirmPassword: "", role: "Member" });
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const { isAuthenticated } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -24,6 +33,7 @@ function Register() {
       const res = await api.post("/Auth/register", form);
       setMessage(res.data?.message || "Registration successful! You can now log in.");
       setIsSuccess(true);
+      navigate("/login");
     } catch (err) {
       console.error(err.response ? err.response.data : err.message);
       const serverMsg = err.response?.data?.message;

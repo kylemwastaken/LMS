@@ -166,3 +166,5 @@ C:\Users\kylem\LMS\obj\Debug\net10.0\ref\LMS.dll
 C:\Users\kylem\LMS\bin\Debug\net10.0\lms-frontend\package-lock.json
 C:\Users\kylem\LMS\bin\Debug\net10.0\lms-frontend\package.json
 C:\Users\kylem\LMS\bin\Debug\net10.0\lms-frontend\public\manifest.json
+C:\Users\kylem\LMS\bin\Debug\net10.0\lms-frontend\build\asset-manifest.json
+C:\Users\kylem\LMS\bin\Debug\net10.0\lms-frontend\build\manifest.json

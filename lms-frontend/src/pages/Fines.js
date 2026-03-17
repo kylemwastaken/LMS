@@ -3,12 +3,14 @@ import api from "../services/api";
 import "./Fines.css";
 
 
+
 function Fines() {
   const [fines, setFines] = useState([]);
   const [newFine, setNewFine] = useState({ borrowingId: "", amount: "" });
   const [payId, setPayId] = useState("");
   const [searchBorrowingId, setSearchBorrowingId] = useState("");
   const [message, setMessage] = useState("");
+  const role = localStorage.getItem("role");
 
   // View all fines
   useEffect(() => {
@@ -106,16 +108,20 @@ function Fines() {
       </div>
 
       {/* Reset / Show all fines */}
-      <div>
-        <button
-          onClick={() => {
-            setMessage("");
-            api.get("/fines").then(res => setFines(res.data));
-          }}
-        >
-          Show All Fines
-        </button>
-      </div>
+      {role === "Admin" && (
+        <div>
+          <button
+            onClick={() => {
+              setMessage("");
+              api.get("/fines").then(res => setFines(res.data));
+            }}
+          >
+            Show All Fines
+          </button>
+        </div>
+      
+          
+        )}
 
       {/* Fines List */}
       <ul>

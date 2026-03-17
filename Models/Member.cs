@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace LMS.Models;
 
 public class Member
@@ -11,6 +13,7 @@ public class Member
 
      public bool EmailConfirmed { get; set; } = false; // ✅ new field
 
+    [JsonIgnore]
     public ICollection<Borrowing>? Borrowings { get; set; }
 }
 

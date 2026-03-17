@@ -1,13 +1,22 @@
 import React, { useState } from "react";
 import api from "../services/api";
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+
 
 
 function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const [message, setMessage] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const navigate = useNavigate();
+  const { isAuthenticated, login } = useAuth();
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -19,8 +28,8 @@ function Login() {
       const res = await api.post("/Auth/login", form);
       setMessage("Login successful!");
       setIsSuccess(true);
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("role", res.data.role);
+      login(res.data.token, res.data.role);
+      navigate("/dashboard");
     } catch (err) {
       console.error(err.response ? err.response.data : err.message);
       const serverMsg = err.response?.data?.message;

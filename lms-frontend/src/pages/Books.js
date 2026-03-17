@@ -146,12 +146,17 @@ function Books() {
 
       {/* Search by Category */}
       <div>
-        <input
-          type="text"
-          placeholder="Search by Category"
+        <select
           value={searchCategory}
           onChange={(e) => setSearchCategory(e.target.value)}
-        />
+        >
+          <option value="">Select Category</option>
+          <option value="Academic">Academic</option>
+          <option value="Fiction">Fiction</option>
+          <option value="Documentary">Documentary</option>
+        </select>
+
+
         <button onClick={handleSearchByCategory}>Search</button>
       </div>
 
